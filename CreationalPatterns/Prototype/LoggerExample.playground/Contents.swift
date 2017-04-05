@@ -14,7 +14,7 @@ class MessageLogger{
     var messages: [Message] = []
     
     func logMessage(msg:Message) {
-        messages.append(msg)
+        messages.append(Message(to: msg.to, msg: msg.message))
     }
     
     func processLogMessages(callback:(Message) -> Void) {
