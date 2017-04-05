@@ -10,6 +10,15 @@ class Message{
     }
 }
 
+class DetailedMessage: Message{
+    var from:String
+    
+    init(to: String, msg: String, from: String) {
+        self.from = from
+        super.init(to: to, msg: msg)
+    }
+}
+
 class MessageLogger{
     var messages: [Message] = []
     
@@ -30,9 +39,15 @@ logger.logMessage(msg: msg)
 
 msg.to = "Ubaid Tahir"
 msg.message = "How are you?"
-
 logger.logMessage(msg: msg)
 
+logger.logMessage(msg: DetailedMessage(to: "Amit Dixit", msg: "Hi..!!", from: "Pritam Hinger"))
+
 logger.processLogMessages(callback: { msg -> Void in
-    print("Message -->> To: \(msg.to) Message: \(msg.message)")
+    if let detailedMsg = msg as? DetailedMessage{
+        print("Detailed Message -->> To: \(detailedMsg.to) Message: \(detailedMsg.message) From: \(detailedMsg.from)")
+    }
+    else{
+        print("Message -->> To: \(msg.to) Message: \(msg.message)")
+    }
 })
