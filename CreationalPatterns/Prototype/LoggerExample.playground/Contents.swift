@@ -23,7 +23,12 @@ class MessageLogger{
     var messages: [Message] = []
     
     func logMessage(msg:Message) {
-        messages.append(Message(to: msg.to, msg: msg.message))
+        if let detailedMsg = msg as? DetailedMessage{
+            messages.append(DetailedMessage(to: detailedMsg.to, msg: detailedMsg.message, from: detailedMsg.from))
+        }
+        else{
+            messages.append(Message(to: msg.to, msg: msg.message))
+        }
     }
     
     func processLogMessages(callback:(Message) -> Void) {
