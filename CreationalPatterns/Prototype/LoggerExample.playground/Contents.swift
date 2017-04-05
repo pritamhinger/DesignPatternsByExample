@@ -1,12 +1,16 @@
 import Foundation
 
-class Message{
+class Message: NSObject, NSCopying{
     var to:String
     var message:String
     
     init(to: String, msg:String) {
         self.to = to
         self.message = msg
+    }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        return Message(to: self.to, msg: self.message)
     }
 }
 
@@ -17,18 +21,17 @@ class DetailedMessage: Message{
         self.from = from
         super.init(to: to, msg: msg)
     }
+    
+    override func copy(with zone: NSZone?) -> Any {
+        return DetailedMessage(to: self.to, msg: self.message, from: self.from)
+    }
 }
 
 class MessageLogger{
     var messages: [Message] = []
     
     func logMessage(msg:Message) {
-        if let detailedMsg = msg as? DetailedMessage{
-            messages.append(DetailedMessage(to: detailedMsg.to, msg: detailedMsg.message, from: detailedMsg.from))
-        }
-        else{
-            messages.append(Message(to: msg.to, msg: msg.message))
-        }
+        messages.append(msg.copy() as! Message)
     }
     
     func processLogMessages(callback:(Message) -> Void) {
